@@ -99,6 +99,13 @@ class IPTables(object):
 		self.filters.insert(3, '-A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT')
 		return self
 
+	def appendDefaultReject(self):
+		""" Add a REJECT policy with icmp-host-prohibited at the end of the rules """
+		self.filters.append('-A INPUT -j REJECT --reject-with icmp-host-prohibited')
+		self.filters.append('-A OUTPUT -j REJECT --reject-with icmp-host-prohibited')
+		self.filters.append('-A FORWARD -j REJECT --reject-with icmp-host-prohibited')
+		return self
+
 	def appendDefaultDrop(self):
 		""" Add a DROP policy at the end of the rules """
 		self.filters.append('-A INPUT -j DROP')
